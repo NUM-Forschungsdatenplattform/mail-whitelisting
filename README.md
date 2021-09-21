@@ -11,17 +11,17 @@ Configuration is done per ream in the keycloak administration console
 Steps:
 
 1. Select realm to be configured
-1. Go to *Authentication* under *Flows* select *Registration* 
-1. On the right click copy and creat a copy of the *Registration* flow
+1. Go to *Authentication* tab on the left and under *Flows* select *Registration* 
+1. On the right hand of the screen click copy button and creat a copy of the *Registration* flow
 1. Name the new flow
-1. In the *Flows* tab select the newly copied registration flow in order to configure it
-1. Under *Actions* under the root execution add a new execution
-1. In the providers list select the plugin name *Registration email domain validation*
+1. In the *Flows* tab, select the newly created registration flow in order to configure it
+1. Under *Actions*, under the root execution, add a new execution
+1. In the providers list, select the plugin name *Registration email domain validation*
 1. Save
-1. Move the newly add execution flow to be just below *Profile validation*
-1. Enable it
-1. On the right there is a config button where the plugin is to be configure
-1. Under bindings the newly created registration flow needs to be selected instead of the default *Registration* 
+1. Move the newly added execution flow to be just below *Profile validation*; this is important such that all the form validation is done sequentially
+1. Enable it the new execution
+1. On the right there is a config button where the plugin is to be configured
+1. Under *Bindings* tab next to the *Flows#tab, the newly created registration flow needs to be selected instead of the default *Registration* 
 
 Sample config values
 
