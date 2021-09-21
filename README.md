@@ -1,10 +1,10 @@
 # mail-whitelisting
 
-###Deployment
+### Deployment
 
 Copy jar to /opt/jboss/keycloak/standalone/deployments
 
-###Cofiguration
+### Cofiguration
 
 Configuration is done per ream in the keycloak administration console
 
@@ -21,7 +21,7 @@ Steps:
 1. Move the newly added execution flow to be just below *Profile validation*; this is important such that all the form validation is done sequentially
 1. Enable the new execution
 1. On the right there is a config button where the plugin is to be configured
-1. Under *Bindings* tab next to the *Flows#tab, the newly created registration flow needs to be selected instead of the default *Registration* 
+1. Under *Bindings* tab next to the *Flows* tab, the newly created registration flow needs to be selected instead of the default *Registration* 
 
 Sample config values
 
@@ -29,4 +29,6 @@ Sample config values
 * Token uri: https://keycloak.dev.num-codex.de/auth/realms/crr/protocol/openid-connect/token
 * Client id: 89dddc8f-0f25-4faf-a58d-6cda681f6ed3
 * Secret: num-portal
-* Error message: <div>Invalid email address. Please contact us at: <a href="mailto:webmaster@example.com">Jon Doe</a></div>
+* Error message: 
+
+```<div>Invalid email address. Please contact us at: <a href="mailto:webmaster@example.com">Jon Doe</a></div>``` 
