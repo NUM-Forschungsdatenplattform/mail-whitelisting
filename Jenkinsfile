@@ -1,29 +1,37 @@
 pipeline {
-	agent any
-	stages {
-		
+    
+    agent {
+        dockerfile {
+            args '-u root:root --network="host"'
+        }
+    }
+
+    stages {
 		stage('Build') {
             steps {
-                bat './gradlew build'
+                sh 'mvn build'
             }
         }
         
         stage('Test') {
             steps {
-                bat './gradlew test'
+                bat 'mvn test'
             }
         }
         
         stage('Check') {
             steps {
-                bat './gradlew check'
+                bat 'mvn check'
             }
         }      
-		
-		stage('Five') {
-			steps {
-				echo 'Finished'
-			}
-		}		
-	}
+	
+        }
+    }
+
+    post {
+        always {
+            sh "chmod -R 777 ."
+            cleanWs ()
+        }
+    }
 }
