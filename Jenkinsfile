@@ -9,27 +9,14 @@ pipeline {
     stages {
 		stage('Build') {
             steps {
-                sh 'mvn build'
+                sh 'mvn clean install'
             }
-        }
-        
-        stage('Test') {
-            steps {
-                bat 'mvn test'
-            }
-        }
-        
-        stage('Check') {
-            steps {
-                bat 'mvn check'
-            }
-        }      
-	
         }
     }
 
     post {
         always {
+            archiveArtifacts artifacts: '**/*.jar', fingerprint: true
             sh "chmod -R 777 ."
             cleanWs ()
         }
