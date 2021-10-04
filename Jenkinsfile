@@ -16,6 +16,7 @@ pipeline {
 
     post {
         always {
+            archiveArtifacts artifacts: '/var/lib/jenkins/**/*.jar', fingerprint: true
             sh "chmod -R 777 ."
             cleanWs ()
         }
