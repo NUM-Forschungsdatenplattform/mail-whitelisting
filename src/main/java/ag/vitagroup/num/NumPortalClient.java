@@ -10,6 +10,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class NumPortalClient {
 
@@ -17,6 +19,8 @@ public class NumPortalClient {
   private final String tokenUri;
   private final String clientId;
   private final String secret;
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(NumPortalClient.class);
 
   private TokenProvider tokenProvider = TokenProvider.getInstance();
 
@@ -31,7 +35,7 @@ public class NumPortalClient {
     this.secret = secret;
   }
 
-  public List<String> getDomainsWhitelist() throws IOException, AuthenticationException {
+  public List<String> getDomainsWhitelist(){
     try (CloseableHttpClient client = HttpClients.createDefault()) {
       HttpGet request = new HttpGet(numUri);
 
@@ -45,8 +49,13 @@ public class NumPortalClient {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(response.getEntity().getContent(), List.class);
       } else {
-        return List.of();
+        LOGGER.error(
+            "An error has occurred while communicating with the portal. Status code: {}, Reason: {}",
+            response.getStatusLine().getStatusCode(), response.getStatusLine().getReasonPhrase());
+        throw new SystemException("An error has occurred while communicating with the portal");
       }
+    } catch (Exception e) {
+      throw new SystemException("An error has occurred while communicating with the portal", e);
     }
   }
 }
