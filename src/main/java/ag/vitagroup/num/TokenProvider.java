@@ -67,6 +67,8 @@ public final class TokenProvider {
         ObjectMapper mapper = new ObjectMapper();
 
         token = mapper.readValue(response.getEntity().getContent(), Token.class);
+        token.setExpiry(LocalDateTime.now().plusSeconds(token.getExpiresIn()));
+
         tokenStore.put(String.format("%s%s%s", clientId, secret, tokenUri), token);
       }
     }

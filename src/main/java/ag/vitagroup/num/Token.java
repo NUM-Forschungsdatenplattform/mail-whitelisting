@@ -29,7 +29,10 @@ public class Token {
 
   public void setExpiresIn(long expiresIn) {
     this.expiresIn = expiresIn;
-    this.expiry = LocalDateTime.now().plusSeconds(expiresIn);
+  }
+
+  public void setExpiry(LocalDateTime expiry) {
+    this.expiry = expiry;
   }
 
   public LocalDateTime getExpiry() {
