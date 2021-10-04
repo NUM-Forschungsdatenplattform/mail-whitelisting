@@ -16,7 +16,7 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: '/**/*.jar', fingerprint: true
+            archiveArtifacts artifacts: '**/*.jar', fingerprint: true
             sh "chmod -R 777 ."
             cleanWs ()
         }
