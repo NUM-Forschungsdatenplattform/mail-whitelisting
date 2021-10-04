@@ -1,12 +1,10 @@
 package ag.vitagroup.num;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.ws.rs.core.MultivaluedMap;
-import org.apache.http.auth.AuthenticationException;
 import org.keycloak.authentication.FormAction;
 import org.keycloak.authentication.ValidationContext;
 import org.keycloak.authentication.forms.RegistrationPage;
