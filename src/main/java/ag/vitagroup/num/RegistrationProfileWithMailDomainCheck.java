@@ -1,11 +1,10 @@
 package ag.vitagroup.num;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.ws.rs.core.MultivaluedMap;
-import org.apache.http.auth.AuthenticationException;
 import org.keycloak.authentication.FormAction;
 import org.keycloak.authentication.ValidationContext;
 import org.keycloak.authentication.forms.RegistrationPage;
@@ -16,9 +15,15 @@ import org.keycloak.models.utils.FormMessage;
 import org.keycloak.provider.ProviderConfigProperty;
 import org.keycloak.services.messages.Messages;
 import org.keycloak.services.validation.Validation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class RegistrationProfileWithMailDomainCheck extends RegistrationProfile implements
     FormAction {
+
+  private static final Logger LOGGER = LoggerFactory
+      .getLogger(RegistrationProfileWithMailDomainCheck.class);
 
   public static final String PROVIDER_ID = "registration-mail-domain-validation";
   private static final List<ProviderConfigProperty> CONFIG_PROPERTIES = new ArrayList<>();
@@ -105,8 +110,9 @@ public class RegistrationProfileWithMailDomainCheck extends RegistrationProfile 
 
     try {
       domains = client.getDomainsWhitelist();
-    } catch (IOException | AuthenticationException e) {
-      e.printStackTrace();
+    } catch (SystemException e) {
+      LOGGER.error("An error has occurred while retrieving whitelisted email domains: {}",
+          e.getMessage());
     }
 
     MultivaluedMap<String, String> formData = context.getHttpRequest().getDecodedFormParameters();
@@ -129,20 +135,28 @@ public class RegistrationProfileWithMailDomainCheck extends RegistrationProfile 
 
   private void validateEmail(String email, ValidationContext context, List<FormMessage> errors) {
     if (Validation.isBlank(email)) {
+      LOGGER.error("Registration email is blank");
       errors.add(new FormMessage(RegistrationPage.FIELD_EMAIL, Messages.MISSING_EMAIL));
     } else if (!Validation.isEmailValid(email)) {
-      context.getEvent().detail(Details.EMAIL, email);
+      LOGGER.error("Registration email is not valid: {}", email);
+      context.getEvent().detail(Details.EMAIL, email).error(Messages.INVALID_EMAIL);
       errors.add(new FormMessage(RegistrationPage.FIELD_EMAIL, Messages.INVALID_EMAIL));
     }
   }
 
   private void validateDomain(String email, List<String> domains, ValidationContext context,
       List<FormMessage> errors, Map<String, String> config) {
+    LOGGER.info("Whitelisted domains: {}", domains.stream()
+        .map(String::valueOf)
+        .collect(Collectors.joining(",", "{", "}")));
+
     for (String domain : domains) {
       if (email.endsWith(String.format("@%s", domain))) {
         return;
       }
     }
+
+    LOGGER.error("Email address not whitelisted: {}", email);
     context.getEvent().detail(Details.EMAIL, email);
     errors.add(new FormMessage(RegistrationPage.FIELD_EMAIL, config.get(ERROR_MESSAGE)));
   }
