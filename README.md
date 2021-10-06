@@ -31,4 +31,4 @@ Sample config values
 * Secret: num-portal
 * Error message: 
 
-```<div>Invalid email address. Please contact us at: <a href="mailto:webmaster@example.com">Jon Doe</a></div>``` 
+```<div>Invalid email address. Please contact us at: <a href="mailto:dorothea.brooke@vitagroup.com">Dorothea Brooke</a></div>``` 
