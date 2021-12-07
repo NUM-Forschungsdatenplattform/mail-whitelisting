@@ -3,6 +3,7 @@ package ag.vitagroup.num;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.ws.rs.core.MultivaluedMap;
 import org.keycloak.authentication.FormAction;
@@ -112,7 +113,7 @@ public class RegistrationProfileWithMailDomainCheck extends RegistrationProfile 
       domains = client.getDomainsWhitelist();
     } catch (SystemException e) {
       LOGGER.error("An error has occurred while retrieving whitelisted email domains: {}",
-          e.getMessage());
+          e.getMessage(), e);
     }
 
     MultivaluedMap<String, String> formData = context.getHttpRequest().getDecodedFormParameters();
@@ -150,8 +151,11 @@ public class RegistrationProfileWithMailDomainCheck extends RegistrationProfile 
         .map(String::valueOf)
         .collect(Collectors.joining(",", "{", "}")));
 
+    String emailDomain = email.substring(email.indexOf("@") + 1);
+
     for (String domain : domains) {
-      if (email.endsWith(String.format("@%s", domain))) {
+      if (Pattern.matches(domainToRegex(domain), emailDomain)) {
+        LOGGER.info("Email address {} matches domain {}.", email, domain);
         return;
       }
     }
@@ -161,4 +165,8 @@ public class RegistrationProfileWithMailDomainCheck extends RegistrationProfile 
     errors.add(new FormMessage(RegistrationPage.FIELD_EMAIL, config.get(ERROR_MESSAGE)));
   }
 
+  private String domainToRegex(String domain) {
+    String newDomain = domain.replace(".", "\\.");
+    return newDomain.replace("*", ".*");
+  }
 }
