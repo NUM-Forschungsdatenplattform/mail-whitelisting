@@ -136,10 +136,10 @@ public class RegistrationProfileWithMailDomainCheck extends RegistrationProfile 
 
   private void validateEmail(String email, ValidationContext context, List<FormMessage> errors) {
     if (Validation.isBlank(email)) {
-      LOGGER.error("Registration email is blank");
+      LOGGER.error("NEW - Registration email is blank");
       errors.add(new FormMessage(RegistrationPage.FIELD_EMAIL, Messages.MISSING_EMAIL));
     } else if (!Validation.isEmailValid(email)) {
-      LOGGER.error("Registration email is not valid: {}", email);
+      LOGGER.error("NEW - Registration email is not valid: {}", email);
       context.getEvent().detail(Details.EMAIL, email).error(Messages.INVALID_EMAIL);
       errors.add(new FormMessage(RegistrationPage.FIELD_EMAIL, Messages.INVALID_EMAIL));
     }
@@ -155,12 +155,12 @@ public class RegistrationProfileWithMailDomainCheck extends RegistrationProfile 
 
     for (String domain : domains) {
       if (Pattern.matches(domainToRegex(domain), emailDomain)) {
-        LOGGER.info("Email address {} matches domain {}.", email, domain);
+        LOGGER.info("NEW - Email address {} matches domain {}.", email, domain);
         return;
       }
     }
 
-    LOGGER.error("Email address not whitelisted: {}", email);
+    LOGGER.error("NEW - Email address not whitelisted: {}", email);
     context.getEvent().detail(Details.EMAIL, email);
     errors.add(new FormMessage(RegistrationPage.FIELD_EMAIL, config.get(ERROR_MESSAGE)));
   }
