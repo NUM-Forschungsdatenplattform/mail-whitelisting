@@ -35,6 +35,8 @@ public class RegistrationProfileWithMailDomainCheck extends RegistrationProfile 
   private static final String TOKEN_URI = "tokenUri";
   private static final String ERROR_MESSAGE = "errorMessage";
 
+  private static final int EMAIL_MAX_LENGTH = 255;
+
   static {
     ProviderConfigProperty clientIdProperty = new ProviderConfigProperty();
     clientIdProperty.setName(CLIENT_ID);
@@ -138,7 +140,7 @@ public class RegistrationProfileWithMailDomainCheck extends RegistrationProfile 
     if (Validation.isBlank(email)) {
       LOGGER.error("Registration email is blank");
       errors.add(new FormMessage(RegistrationPage.FIELD_EMAIL, Messages.MISSING_EMAIL));
-    } else if (!Validation.isEmailValid(email)) {
+    } else if (!Validation.isEmailValid(email) || email.length() > EMAIL_MAX_LENGTH) {
       LOGGER.error("Registration email is not valid: {}", email);
       context.getEvent().detail(Details.EMAIL, email).error(Messages.INVALID_EMAIL);
       errors.add(new FormMessage(RegistrationPage.FIELD_EMAIL, Messages.INVALID_EMAIL));

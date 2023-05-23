@@ -1,6 +1,6 @@
 
 
-# mail-whitelisting
+# mail-whitelisting and field length validation for registration page
 
 ### Deployment
 
