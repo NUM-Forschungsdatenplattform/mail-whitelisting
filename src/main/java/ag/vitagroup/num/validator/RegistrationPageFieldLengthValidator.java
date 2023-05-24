@@ -76,9 +76,9 @@ public class RegistrationPageFieldLengthValidator extends RegistrationProfile im
         }
     }
 
-    private Optional<FormMessage> validateField(Map<String, String> contextConfig,String fieldValue, String fieldName, String configKey, String errorKey) {
+    private Optional<FormMessage> validateField(Map<String, String> contextConfig, String fieldValue, String fieldName, String configKey, String errorKey) {
         Integer fieldMaxLength = Integer.valueOf(contextConfig.get(configKey));
-        if(StringUtil.isNotBlank(fieldValue)) {
+        if (StringUtil.isNotBlank(fieldValue)) {
             if (contextConfig.containsKey(configKey) && fieldValue.length() > fieldMaxLength.intValue()) {
                 return Optional.of(new FormMessage(fieldName, errorKey, fieldMaxLength));
             }
