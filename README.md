@@ -42,7 +42,13 @@ Sample config values
 
 ```<span class="message-text" style = "display:block">Your email-address is not allowed. Please contact our support at:<a href="mailto:num-support@gwdg.de" style="color: white;font-weight: bold;padding-left: 10px;">num-support@gwdg.de</a> and inform about this message.</span>``` 
 
-
+Steps to configure field length validator plugin
+1. Repeat step 1-6 but for previously created flow (so you have to duplicate "registration-with-whitelisting" flow)
+2. In the providers list, select the plugin name *NUM Custom registration page field length validator*
+3. Move the newly added execution flow to be just below *Profile validation*  and above "Registration email domain validation"; this is important such that all the form validation is done sequentially
+4. save
+5. On the right there is a config button (gear settings) where the plugin is to be configured (first and last name maximum length should be set to 50, department to 100 and notes to 255)
+6. repeat 12-13 from above
 ### License
 
 Copyright 2021 vitagroup AG
