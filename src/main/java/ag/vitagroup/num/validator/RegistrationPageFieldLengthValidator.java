@@ -80,6 +80,7 @@ public class RegistrationPageFieldLengthValidator extends RegistrationProfile im
         Integer fieldMaxLength = Integer.valueOf(contextConfig.get(configKey));
         if (StringUtil.isNotBlank(fieldValue)) {
             if (contextConfig.containsKey(configKey) && fieldValue.length() > fieldMaxLength.intValue()) {
+                LOGGER.warn("Registration field {} exceeded configured max length {}. Current length {} ", fieldName, fieldMaxLength, fieldValue.length());
                 return Optional.of(new FormMessage(fieldName, errorKey, fieldMaxLength));
             }
         }
