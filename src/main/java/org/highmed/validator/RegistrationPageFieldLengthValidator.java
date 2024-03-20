@@ -1,4 +1,4 @@
-package ag.vitagroup.num.validator;
+package org.highmed.validator;
 
 import org.keycloak.authentication.FormAction;
 import org.keycloak.authentication.ValidationContext;

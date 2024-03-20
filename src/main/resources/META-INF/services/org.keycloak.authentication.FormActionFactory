@@ -1,2 +1,2 @@
-ag.vitagroup.num.RegistrationProfileWithMailDomainCheck
-ag.vitagroup.num.validator.RegistrationPageFieldLengthValidator
+org.highmed.RegistrationProfileWithMailDomainCheck
+org.highmed.validator.RegistrationPageFieldLengthValidator

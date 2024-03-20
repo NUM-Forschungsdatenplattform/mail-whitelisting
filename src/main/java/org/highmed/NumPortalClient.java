@@ -1,4 +1,4 @@
-package ag.vitagroup.num;
+package org.highmed;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
