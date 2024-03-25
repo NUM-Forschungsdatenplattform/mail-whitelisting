@@ -1,4 +1,4 @@
-package ag.vitagroup.num;
+package org.highmed;
 
 import java.util.ArrayList;
 import java.util.List;
