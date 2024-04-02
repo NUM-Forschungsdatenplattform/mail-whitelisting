@@ -1,4 +1,4 @@
-package org.highmed;
+package org.highmed.mailwhitelisting;
 
 public class SystemException extends RuntimeException {
 

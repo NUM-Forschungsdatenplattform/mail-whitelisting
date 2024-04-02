@@ -1,4 +1,4 @@
-package org.highmed;
+package org.highmed.mailwhitelisting;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;

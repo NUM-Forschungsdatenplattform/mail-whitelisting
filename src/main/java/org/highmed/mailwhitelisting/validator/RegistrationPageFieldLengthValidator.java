@@ -1,4 +1,4 @@
-package org.highmed.validator;
+package org.highmed.mailwhitelisting.validator;
 
 import org.keycloak.authentication.FormAction;
 import org.keycloak.authentication.ValidationContext;

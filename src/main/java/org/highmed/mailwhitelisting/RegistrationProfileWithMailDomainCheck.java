@@ -1,4 +1,4 @@
-package org.highmed;
+package org.highmed.mailwhitelisting;
 
 import java.util.ArrayList;
 import java.util.List;

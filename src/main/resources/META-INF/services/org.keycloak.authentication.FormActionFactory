@@ -1,2 +1,2 @@
-org.highmed.RegistrationProfileWithMailDomainCheck
-org.highmed.validator.RegistrationPageFieldLengthValidator
+org.highmed.mailwhitelisting.RegistrationProfileWithMailDomainCheck
+org.highmed.mailwhitelisting.validator.RegistrationPageFieldLengthValidator
