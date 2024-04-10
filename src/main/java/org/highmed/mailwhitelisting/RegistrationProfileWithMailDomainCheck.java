@@ -67,7 +67,7 @@ public class RegistrationProfileWithMailDomainCheck extends RegistrationProfile 
     errorMessageProperty.setLabel("Error message");
     errorMessageProperty.setType(ProviderConfigProperty.TEXT_TYPE);
     errorMessageProperty.setHelpText(
-        "Sample: <div>Invalid email address. Please contact us at: <a href=\"mailto:dorothea.brooke@vitagroup.com\">Dorothea Brooke</a></div>");
+        "Sample: <div>Invalid email address. Please contact us at: <a href=\"mailto:rdp-support@highmed.org\">Highmed e.V.</a></div>");
 
     CONFIG_PROPERTIES.add(tokenProperty);
     CONFIG_PROPERTIES.add(clientIdProperty);
