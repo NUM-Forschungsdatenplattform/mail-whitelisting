@@ -3,6 +3,9 @@ name: Build for development
 on:
   push:
     branches: [ 'feature/**', 'dependabot/**' ]
+  pull_request_target:
+    branches: [ develop, main ]
+    types: [ ready_for_review, closed ]
 
 jobs:
   scan:
