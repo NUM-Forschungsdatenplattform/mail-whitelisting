@@ -1,9 +1,10 @@
 package org.highmed.mailwhitelisting.validator;
 
+import jakarta.ws.rs.core.MultivaluedMap;
 import org.keycloak.authentication.FormAction;
 import org.keycloak.authentication.ValidationContext;
 import org.keycloak.authentication.forms.RegistrationPage;
-import org.keycloak.authentication.forms.RegistrationProfile;
+import org.keycloak.authentication.forms.RegistrationUserCreation;
 import org.keycloak.events.Errors;
 import org.keycloak.models.utils.FormMessage;
 import org.keycloak.provider.ProviderConfigProperty;
@@ -11,13 +12,12 @@ import org.keycloak.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.core.MultivaluedMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class RegistrationPageFieldLengthValidator extends RegistrationProfile implements FormAction {
+public class RegistrationPageFieldLengthValidator extends RegistrationUserCreation implements FormAction {
 
     private static final Logger LOGGER = LoggerFactory
             .getLogger(RegistrationPageFieldLengthValidator.class);

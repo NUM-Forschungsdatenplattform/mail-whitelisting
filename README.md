@@ -17,15 +17,15 @@ Configuration is done per realm in the keycloak administration console
 Steps:
 
 1. Select realm to be configured
-2. Go to *Authentication* tab on the left and under *Flows* select *Registration* 
-3. On the right hand of the screen click "Duplicate" button and create a copy of the *Registration* flow
-4. Name the new flow
+2. Go to *Authentication* tab on the left and under *Flows* select *registration* 
+3. On the right hand of the screen select "Duplicate" from the "Action" menu and create a copy of the *registration* flow
+4. Name the new flow "registration-with-whitelisting"
 5. In the *Flows* tab, select the newly created registration flow in order to configure it
 6. Under *Add* (+ icon), add a new step 
 7. In the providers list, select the plugin name *Registration email domain validation*
 8. Save
-9. Move the newly added execution flow to be just below *Profile validation*; this is important such that all the form validation is done sequentially
-10. Enable the new execution 
+9. Move the newly added step to be just below *Registration User Profile Creation*; this is important such that all the form validation is done sequentially
+10. Set the new step to "Required"
 11. On the right there is a config button (gear settings) where the plugin is to be configured
 12. Under *Flows* tab, the newly created registration flow needs to be selected instead of the default *Registration* 
 13. Click on settings (right corner with 3 verical dots) and choose bind flow
@@ -45,7 +45,7 @@ Sample config values
 Steps to configure field length validator plugin
 1. Repeat step 1-6 but for previously created flow (so you have to duplicate "registration-with-whitelisting" flow)
 2. In the providers list, select the plugin name *NUM Custom registration page field length validator*
-3. Move the newly added execution flow to be just below *Profile validation*  and above "Registration email domain validation"; this is important such that all the form validation is done sequentially
+3. Move the newly added execution flow to be just below *Registration User Profile Creation*  and above "Registration email domain validation"; this is important such that all the form validation is done sequentially
 4. save
 5. On the right there is a config button (gear settings) where the plugin is to be configured (first and last name maximum length should be set to 50, department to 100 and notes to 255)
 6. repeat 12-13 from above
