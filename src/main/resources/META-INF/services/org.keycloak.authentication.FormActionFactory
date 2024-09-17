@@ -1,1 +1,3 @@
-ag.vitagroup.num.RegistrationProfileWithMailDomainCheck
+org.highmed.mailwhitelisting.RegistrationProfileWithMailDomainCheck
+org.highmed.mailwhitelisting.validator.RegistrationPageFieldLengthValidator
+

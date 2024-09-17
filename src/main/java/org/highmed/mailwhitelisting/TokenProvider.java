@@ -1,4 +1,4 @@
-package ag.vitagroup.num;
+package org.highmed.mailwhitelisting;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;

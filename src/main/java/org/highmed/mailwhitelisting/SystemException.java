@@ -1,4 +1,4 @@
-package ag.vitagroup.num;
+package org.highmed.mailwhitelisting;
 
 public class SystemException extends RuntimeException {
 

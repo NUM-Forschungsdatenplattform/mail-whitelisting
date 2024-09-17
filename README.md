@@ -1,10 +1,14 @@
 
 
-# mail-whitelisting
+# mail-whitelisting and field length validation for registration page
 
 ### Deployment
 
-Copy jar to ```/opt/jboss/keycloak/standalone/deployments```
+1. Copy jar to ```/keycloak-<version>/providers```
+2. Run the following command to complete the installation:
+```
+${kc.home.dir}/bin/kc.sh build
+```
 
 ### Configuration
 
@@ -13,32 +17,41 @@ Configuration is done per realm in the keycloak administration console
 Steps:
 
 1. Select realm to be configured
-1. Go to *Authentication* tab on the left and under *Flows* select *Registration* 
-1. On the right hand of the screen click copy button and create a copy of the *Registration* flow
-1. Name the new flow
-1. In the *Flows* tab, select the newly created registration flow in order to configure it
-1. Under *Actions*, under the root execution, add a new execution
-1. In the providers list, select the plugin name *Registration email domain validation*
-1. Save
-1. Move the newly added execution flow to be just below *Profile validation*; this is important such that all the form validation is done sequentially
-1. Enable the new execution
-1. On the right there is a config button where the plugin is to be configured
-1. Under *Bindings* tab next to the *Flows* tab, the newly created registration flow needs to be selected instead of the default *Registration* 
+2. Go to *Authentication* tab on the left and under *Flows* select *registration* 
+3. On the right hand of the screen select "Duplicate" from the "Action" menu and create a copy of the *registration* flow
+4. Name the new flow "registration-with-whitelisting"
+5. In the *Flows* tab, select the newly created registration flow in order to configure it
+6. Under *Add* (+ icon), add a new step 
+7. In the providers list, select the plugin name *Registration email domain validation*
+8. Save
+9. Move the newly added step to be just below *Registration User Profile Creation*; this is important such that all the form validation is done sequentially
+10. Set the new step to "Required"
+11. On the right there is a config button (gear settings) where the plugin is to be configured
+12. Under *Flows* tab, the newly created registration flow needs to be selected instead of the default *Registration* 
+13. Click on settings (right corner with 3 verical dots) and choose bind flow
+14. Select registration flow
+15. Default *Registration* flow should appear as 'Not in use' now
 
 Sample config values
 
 * Num portal uri: http://host.docker.internal:8090/organization/domains
 * Token uri: https://keycloak.dev.num-codex.de/auth/realms/crr/protocol/openid-connect/token
-* Client id: 89dddc8f-0f25-4faf-a58d-6cda681f6ed3
-* Secret: num-portal
+* Client id: num-portal
+* Client secret: <num-portal-client-secret>
 * Error message: 
 
-```<div>Invalid email address. Please contact us at: <a href="mailto:john.doe@example.com">John Doe</a></div>``` 
+```<span class="message-text" style = "display:block">Your email-address is not allowed. Please contact our support at:<a href="mailto:num-support@gwdg.de" style="color: white;font-weight: bold;padding-left: 10px;">num-support@gwdg.de</a> and inform about this message.</span>``` 
 
-
+Steps to configure field length validator plugin
+1. Repeat step 1-6 but for previously created flow (so you have to duplicate "registration-with-whitelisting" flow)
+2. In the providers list, select the plugin name *NUM Custom registration page field length validator*
+3. Move the newly added execution flow to be just below *Registration User Profile Creation*  and above "Registration email domain validation"; this is important such that all the form validation is done sequentially
+4. save
+5. On the right there is a config button (gear settings) where the plugin is to be configured (first and last name maximum length should be set to 50, department to 100 and notes to 255)
+6. repeat 12-13 from above
 ### License
 
-Copyright 2021 vitagroup AG
+Copyright 2024 HiGHmed e.V.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

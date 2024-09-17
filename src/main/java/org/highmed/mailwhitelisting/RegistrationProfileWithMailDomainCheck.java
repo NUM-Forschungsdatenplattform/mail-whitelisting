@@ -1,14 +1,10 @@
-package ag.vitagroup.num;
+package org.highmed.mailwhitelisting;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import javax.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.MultivaluedMap;
 import org.keycloak.authentication.FormAction;
 import org.keycloak.authentication.ValidationContext;
 import org.keycloak.authentication.forms.RegistrationPage;
-import org.keycloak.authentication.forms.RegistrationProfile;
+import org.keycloak.authentication.forms.RegistrationUserCreation;
 import org.keycloak.events.Details;
 import org.keycloak.events.Errors;
 import org.keycloak.models.utils.FormMessage;
@@ -18,8 +14,14 @@ import org.keycloak.services.validation.Validation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-public class RegistrationProfileWithMailDomainCheck extends RegistrationProfile implements
+
+public class RegistrationProfileWithMailDomainCheck extends RegistrationUserCreation implements
     FormAction {
 
   private static final Logger LOGGER = LoggerFactory
@@ -33,6 +35,8 @@ public class RegistrationProfileWithMailDomainCheck extends RegistrationProfile 
   private static final String NUM_PORTAL_URI = "numPortalUri";
   private static final String TOKEN_URI = "tokenUri";
   private static final String ERROR_MESSAGE = "errorMessage";
+
+  private static final int EMAIL_MAX_LENGTH = 255;
 
   static {
     ProviderConfigProperty clientIdProperty = new ProviderConfigProperty();
@@ -64,7 +68,7 @@ public class RegistrationProfileWithMailDomainCheck extends RegistrationProfile 
     errorMessageProperty.setLabel("Error message");
     errorMessageProperty.setType(ProviderConfigProperty.TEXT_TYPE);
     errorMessageProperty.setHelpText(
-        "Sample: <div>Invalid email address. Please contact us at: <a href=\"mailto:dorothea.brooke@vitagroup.com\">Dorothea Brooke</a></div>");
+        "Sample: <div>Invalid email address. Please contact us at: <a href=\"mailto:rdp-support@highmed.org\">HiGHmed e.V.</a></div>");
 
     CONFIG_PROPERTIES.add(tokenProperty);
     CONFIG_PROPERTIES.add(clientIdProperty);
@@ -112,7 +116,7 @@ public class RegistrationProfileWithMailDomainCheck extends RegistrationProfile 
       domains = client.getDomainsWhitelist();
     } catch (SystemException e) {
       LOGGER.error("An error has occurred while retrieving whitelisted email domains: {}",
-          e.getMessage());
+          e.getMessage(), e);
     }
 
     MultivaluedMap<String, String> formData = context.getHttpRequest().getDecodedFormParameters();
@@ -137,7 +141,7 @@ public class RegistrationProfileWithMailDomainCheck extends RegistrationProfile 
     if (Validation.isBlank(email)) {
       LOGGER.error("Registration email is blank");
       errors.add(new FormMessage(RegistrationPage.FIELD_EMAIL, Messages.MISSING_EMAIL));
-    } else if (!Validation.isEmailValid(email)) {
+    } else if (!Validation.isEmailValid(email) || email.length() > EMAIL_MAX_LENGTH) {
       LOGGER.error("Registration email is not valid: {}", email);
       context.getEvent().detail(Details.EMAIL, email).error(Messages.INVALID_EMAIL);
       errors.add(new FormMessage(RegistrationPage.FIELD_EMAIL, Messages.INVALID_EMAIL));
@@ -150,8 +154,11 @@ public class RegistrationProfileWithMailDomainCheck extends RegistrationProfile 
         .map(String::valueOf)
         .collect(Collectors.joining(",", "{", "}")));
 
+    String emailDomain = email.substring(email.indexOf("@") + 1);
+
     for (String domain : domains) {
-      if (email.endsWith(String.format("@%s", domain))) {
+      if (Pattern.matches(domainToRegex(domain), emailDomain)) {
+        LOGGER.info("Email address {} matches domain {}.", email, domain);
         return;
       }
     }
@@ -161,4 +168,8 @@ public class RegistrationProfileWithMailDomainCheck extends RegistrationProfile 
     errors.add(new FormMessage(RegistrationPage.FIELD_EMAIL, config.get(ERROR_MESSAGE)));
   }
 
+  private String domainToRegex(String domain) {
+    String newDomain = domain.replace(".", "\\.");
+    return newDomain.replace("*", ".*");
+  }
 }

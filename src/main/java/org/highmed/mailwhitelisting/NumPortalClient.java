@@ -1,4 +1,4 @@
-package ag.vitagroup.num;
+package org.highmed.mailwhitelisting;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
@@ -33,7 +33,7 @@ public class NumPortalClient {
     this.secret = secret;
   }
 
-  public List<String> getDomainsWhitelist(){
+  public List<String> getDomainsWhitelist() {
     try (CloseableHttpClient client = HttpClients.createDefault()) {
       HttpGet request = new HttpGet(numUri);
 
@@ -53,7 +53,7 @@ public class NumPortalClient {
         throw new SystemException("An error has occurred while communicating with the portal");
       }
     } catch (Exception e) {
-      throw new SystemException("An error has occurred while communicating with the portal", e);
+      throw new SystemException(e.getMessage(), e);
     }
   }
 }
